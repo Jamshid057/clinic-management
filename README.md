@@ -25,18 +25,15 @@ uv sync
 
 2. Migratsiyalarni ishga tushirish:
 ```bash
+uv run python manage.py makemigrations
 uv run python manage.py migrate
 ```
 
 3. Admin user yaratish:
 ```bash
-uv run python manage.py create_admin --username admin --password admin123
+uv run python manage.py createsuperuser
 ```
-
-Yoki o'z parametrlaringiz bilan:
-```bash
-uv run python manage.py create_admin --username myadmin --email admin@example.com --password mypassword
-```
+email va parol kiritiladi
 
 ## Ishga tushirish
 
@@ -82,3 +79,7 @@ doctor/
 - QR kodlar `media/qr_codes/` papkasida saqlanadi
 - Admin panel Django'ning default admin panelidan alohida yaratilgan
 - Barcha admin sahifalar login talab qiladi
+
+## Author
+
+By https://t.me/NE0_57
