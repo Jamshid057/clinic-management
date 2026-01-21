@@ -1,0 +1,57 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Shifokorlar{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-people"></i> Shifokorlar</h2>
+    <a href="{% url 'admin_panel:doctor_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Yangi shifokor
+    </a>
+</div>
+
+{% if doctors %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ism</th>
+                    <th>Familiya</th>
+                    <th>Kategoriya</th>
+                    <th>Telefon</th>
+                    <th>Amallar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.id }}</td>
+                        <td>{{ doctor.first_name }}</td>
+                        <td>{{ doctor.last_name }}</td>
+                        <td>{{ doctor.category.name }}</td>
+                        <td>{{ doctor.phone }}</td>
+                        <td>
+                            <a href="{% url 'admin_panel:doctor_edit' doctor.id %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil"></i> Tahrirlash
+                            </a>
+                            <form method="post" style="display: inline;" onsubmit="return confirm('Shifokorni o\'chirishni tasdiqlaysizmi?');">
+                                {% csrf_token %}
+                                <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+                                <button type="submit" name="delete" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i> O'chirish
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Hozircha shifokorlar mavjud emas.
+        <a href="{% url 'admin_panel:doctor_add' %}">Birinchi shifokorni qo'shing</a>
+    </div>
+{% endif %}
+{% endblock %}

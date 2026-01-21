@@ -1,0 +1,50 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Navbatlar{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-calendar-check"></i> Navbatlar</h2>
+
+{% if appointments %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Navbat #</th>
+                    <th>Bemor ismi</th>
+                    <th>Bemor familiyasi</th>
+                    <th>Telefon</th>
+                    <th>Shifokor</th>
+                    <th>Sana</th>
+                    <th>QR Kod</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td><span class="badge bg-primary">#{{ appointment.queue_number }}</span></td>
+                        <td>{{ appointment.patient_first_name }}</td>
+                        <td>{{ appointment.patient_last_name }}</td>
+                        <td>{{ appointment.patient_phone }}</td>
+                        <td>{{ appointment.doctor.full_name }}</td>
+                        <td>{{ appointment.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            {% if appointment.qr_code_image %}
+                                <a href="{{ appointment.qr_code_image.url }}" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="bi bi-qr-code"></i> Ko'rish
+                                </a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Hozircha navbatlar mavjud emas.
+    </div>
+{% endif %}
+{% endblock %}

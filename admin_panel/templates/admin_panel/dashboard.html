@@ -1,0 +1,78 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5><i class="bi bi-folder"></i> Kategoriyalar</h5>
+                <h2>{{ stats.total_categories }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5><i class="bi bi-people"></i> Shifokorlar</h5>
+                <h2>{{ stats.total_doctors }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5><i class="bi bi-calendar-check"></i> Barcha Navbatlar</h5>
+                <h2>{{ stats.total_appointments }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5><i class="bi bi-calendar-day"></i> Bugungi Navbatlar</h5>
+                <h2>{{ stats.today_appointments }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5><i class="bi bi-clock-history"></i> So'nggi Navbatlar</h5>
+    </div>
+    <div class="card-body">
+        {% if recent_appointments %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Navbat #</th>
+                            <th>Bemor</th>
+                            <th>Shifokor</th>
+                            <th>Telefon</th>
+                            <th>Sana</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in recent_appointments %}
+                            <tr>
+                                <td><span class="badge bg-primary">#{{ appointment.queue_number }}</span></td>
+                                <td>{{ appointment.patient_first_name }} {{ appointment.patient_last_name }}</td>
+                                <td>{{ appointment.doctor.full_name }}</td>
+                                <td>{{ appointment.patient_phone }}</td>
+                                <td>{{ appointment.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted">Hozircha navbatlar mavjud emas.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
