@@ -1,7 +1,8 @@
-import qrcode
 from io import BytesIO
-from django.core.files import File
+
+import qrcode
 from django.conf import settings
+from django.core.files import File
 
 
 def generate_qr_code(appointment):
@@ -9,7 +10,9 @@ def generate_qr_code(appointment):
     # QR kod ma'lumotlari
     qr_data = f"Appointment ID: {appointment.id}\n"
     qr_data += f"Doctor: {appointment.doctor.full_name}\n"
-    qr_data += f"Patient: {appointment.patient_first_name} {appointment.patient_last_name}\n"
+    qr_data += (
+        f"Patient: {appointment.patient_first_name} {appointment.patient_last_name}\n"
+    )
     qr_data += f"Queue Number: {appointment.queue_number}\n"
     qr_data += f"Phone: {appointment.patient_phone}\n"
     qr_data += f"Date: {appointment.created_at.strftime('%Y-%m-%d %H:%M')}"
@@ -26,15 +29,15 @@ def generate_qr_code(appointment):
 
     # QR kod rasmini yaratish
     img = qr.make_image(fill_color="black", back_color="white")
-    
+
     # BytesIO ga saqlash
     buffer = BytesIO()
-    img.save(buffer, format='PNG')
+    img.save(buffer, format="PNG")
     buffer.seek(0)
 
     # Fayl nomi
-    filename = f'qr_code_{appointment.id}.png'
-    
+    filename = f"qr_code_{appointment.id}.png"
+
     # ImageField ga saqlash
     appointment.qr_code_image.save(filename, File(buffer), save=False)
     appointment.save()
